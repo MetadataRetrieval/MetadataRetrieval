@@ -4,18 +4,28 @@ This project provides the code of the experiments for entity-based retrieval wit
 
 ## Overview
 
-* [SML extension](https://github.com/DatasetRetrieval/submission176_code/tree/main/slib-sml/src/main/java/slib/sml/sm/core/engine)(node level computation for HCF-IDF)
+* [SML extension](https://github.com/MetadataRetrieval/code/tree/main/slib-sml/src/main/java/slib/sml/sm/core/engine)(node level computation for HCF-IDF)
 
-* [slibAPI](https://github.com/DatasetRetrieval/submission176_code/tree/main/slibAPI) (Wrapper)
+* [slibAPI](https://github.com/MetadataRetrieval/code/tree/main/slibAPI) (Wrapper)
 
-* [GATE Mimír plugins](https://github.com/DatasetRetrieval/submission176_code/tree/main/Mimir6.2)
+* [GATE Mimír plugins](https://github.com/MetadataRetrieval/code/tree/main/Mimir6.2)
 
-* [Mimír Search API](https://github.com/DatasetRetrieval/submission176_code/tree/main/MimirSearchAPI) (Wrapper)
+* [Mimír Search API](https://github.com/MetadataRetrieval/code/tree/main/MimirSearchAPI) (Wrapper)
 
-* [Mimir Test](https://github.com/DatasetRetrieval/submission176_code/tree/main/MimirTest/mimirTest)
+* [Mimir Test](https://github.com/MetadataRetrieval/code/tree/main/MimirTest/mimirTest)
+
+* [BiodivTagger]((https://github.com/MetadataRetrieval/code/tree/main/BiodivTagger))
+
+## Installation instructions for Entity Linking in Metadata
+
+prerequisites: The following instructions have been tested with Java 8 and [GATE version 8.6.1](https://gate.ac.uk/). Please download and install GATE 8.6. Please also download, unzip and load the [Ontology plugin](https://github.com/GateNLP/gateplugin-Ontology/releases/tag/v8.5). To load the plugin, start GATE and open the Plugin Manager (the jigsaw icon) in the menu. Then select "open from folder" and navigate to the folder with the Ontology plugin.
+
+#### Load the extended BiodivTagger pipeline
+
+To load a new application in the GATE UI, do a right-click on "Application" and "Restore Application from file". Then navigate to the application.xgapp file of the BEFCHina or BioCADDIE folder. Create a new corpus and add a metadata file you want to annotate, e.g., download the [BEFChina](https://bef-china.com/) datasets and annotate them (run the pipeline). 
 
 
-## Installation instructions
+## Installation instructions for Metadata indexing, search and tests
 
 prerequisites: The following instructions have been tested with Java 8 and Maven 3.3.9
 
