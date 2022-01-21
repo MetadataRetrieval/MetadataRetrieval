@@ -1,4 +1,4 @@
-# submission176_code
+# Code
 
 This project provides the code of the experiments for entity-based retrieval with entity expansion and ranking functions that take hierarchical relations of entities into account.
 
