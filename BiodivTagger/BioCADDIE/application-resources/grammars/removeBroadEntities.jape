@@ -1,0 +1,28 @@
+phase: RemoveBroadEntities
+Input: Anatomy Disease
+options: control=appelt
+
+Rule: removeNE
+(
+  {Disease@string =~ "[Ii][Dd]s?"}
+ |{Disease@string =~ "[Nn]ormal"}
+ |{Disease@string =~ "[Pp]resent"}
+ |{Disease@string =~ "[Oo]thers?"}
+ |{Disease@string =~ "[Tt]erm"}
+ |{Disease@string =~ "[Cc]omplex"}
+ |{Disease@string =~ "i"}
+ |{Disease@string =~ "ii"}
+ |{Disease@string =~ "iii"}
+ |{Disease@string =~ "iv"}
+ |{Disease@string =~ "[Uu]nknown"}
+ |{Disease@string =~ "NA"}
+ |{Anatomy@string =~ "[Rr]oles?"}
+ |{Anatomy@string =~ "[Nn]ormal"}
+ |{Anatomy@string =~ "[Oo]thers?"}
+ |{Anatomy@string =~ "NA"}
+):ignore
+--> :ignore{  
+		   AnnotationSet set = bindings.get("ignore");
+           Annotation ann = set.iterator().next();
+           inputAS.remove(ann); 
+}

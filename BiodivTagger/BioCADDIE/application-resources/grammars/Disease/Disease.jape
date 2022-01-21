@@ -1,0 +1,21 @@
+Phase: Disease
+Input: Lookup Token Root Location
+
+Options: control = brill
+
+Rule: DiseaseToUrlAnnotation
+Priority:20
+(
+{Lookup, Token.category == NN, !Root} | {Lookup, Token.category == NNS, !Root} | {Lookup, Token.category == NNP, !Root} | {Lookup, Token.category == JJ, !Root}
+):mention
+-->
+:mention.Disease = {class = :mention.Lookup.class, inst = :mention.Lookup.inst}
+
+Rule: Root
+Priority:35
+(
+{Lookup,Root}
+):mention
+-->
+:mention.Disease = {class = :mention.Lookup.class, inst = :mention.Lookup.inst, rule = "Root"}
+

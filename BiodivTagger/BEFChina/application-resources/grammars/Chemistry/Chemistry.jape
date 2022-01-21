@@ -1,0 +1,18 @@
+Imports: {
+import static gate.Utils.*;
+}
+
+Phase: Chemistry
+Input: ChemicalCompound ChemicalElement ChemicalIon Lookup LatLon
+
+Options: control = appelt
+
+
+Rule: LatLon
+Priority: 25
+(
+{ChemicalCompound within LatLon} | {ChemicalElement within LatLon} | {ChemicalIon within LatLon}
+):latlon
+-->
+:latlon.LatLonInChemistry = {}
+

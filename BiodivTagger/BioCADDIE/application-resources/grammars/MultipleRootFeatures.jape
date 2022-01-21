@@ -1,0 +1,82 @@
+Imports: { 
+import static gate.Utils.*;
+}
+
+Phase: MultiRootHandling
+Input: Token PluralMultiWords 
+
+Options: control = appelt
+
+Rule: MultiRootHandling
+Priority:20
+(
+ {PluralMultiWords} 
+):mention
+-->
+:mention{
+  AnnotationSet set = bindings.get("mention");
+  Annotation currentAnn = set.iterator().next();
+  FeatureMap oldMap = currentAnn.getFeatures();
+
+  String root1 = (String) currentAnn.getFeatures().get("rootTok1");
+  String root2 = (String) currentAnn.getFeatures().get("rootTok2");
+  String root3 = (String) currentAnn.getFeatures().get("rootTok3");
+  
+  String multipleRoot = "";
+  
+  if(root1!=null)
+	multipleRoot = root1;
+  if(root2!=null){
+	if(multipleRoot.length()< 1){
+		multipleRoot = root2;
+	}
+	else{
+	 multipleRoot = multipleRoot + " " + root2;
+	}
+  }
+  if(root3!=null){
+	if(multipleRoot.length()< 1){
+		multipleRoot = root3;
+	}else{
+		multipleRoot = multipleRoot + " " + root3;
+	}
+  }
+
+  FeatureMap features = Factory.newFeatureMap();
+  features.put("root", multipleRoot); 
+  addAnn(outputAS, currentAnn.getStartNode().getOffset().longValue(), currentAnn.getEndNode().getOffset().longValue(), "Root", features);
+ 
+}
+
+
+Rule: DiseaseHandling
+Priority:30
+(
+ {PluralMultiWords.vbz=="s"} 
+):mention
+-->
+:mention{
+  AnnotationSet set = bindings.get("mention");
+  Annotation currentAnn = set.iterator().next();
+  FeatureMap oldMap = currentAnn.getFeatures();
+
+  String part1 = (String) currentAnn.getFeatures().get("part1");
+  String punc = (String) currentAnn.getFeatures().get("punc");
+  String vbz = (String) currentAnn.getFeatures().get("vbz");
+  String part2 = (String) currentAnn.getFeatures().get("part2");
+  
+  String multipleRoot = "";
+  
+  if(part1!=null && punc!=null && vbz!=null && part2!=null)
+	multipleRoot = part1 + " "+part2;
+  
+
+  FeatureMap features = Factory.newFeatureMap();
+  features.put("root", multipleRoot); 
+  addAnn(outputAS, currentAnn.getStartNode().getOffset().longValue(), currentAnn.getEndNode().getOffset().longValue(), "Root", features);
+ 
+}
+
+
+
+

@@ -1,0 +1,40 @@
+Imports: { 
+import static gate.Utils.*;
+}
+
+Phase: Identify_Plural
+Input: Token 
+
+Options: control = brill
+
+Rule: IdentifyPlural
+Priority:20
+(
+ {Token.affix == "s", Token.category != "VBZ", Token.kind != "punctuation"} 
+):mention
+-->
+:mention.Root = {root = :mention.Token.root}
+
+
+
+Rule: IdentifyPlural
+Priority:25
+(
+ ({Token.category == "NN"} | {Token.category == "NNS"} | {Token.category == "JJ"})?:tok1
+ ({Token.category == "NN"} | {Token.category == "NNS"} | {Token.category == "JJ"}):tok2 
+ ({Token.affix == "s", Token.category != "VBZ", Token.kind != "punctuation"}):tok3 
+):mention
+-->
+:mention.PluralMultiWords = {rootTok1 = :tok1.Token.root, rootTok2 = :tok2.Token.root, rootTok3 = :tok3.Token.root}
+
+
+Rule: DiseaseDetection
+Priority:30
+(
+ ({Token.category == "NN"}|{Token.category == "NNP"}):part1
+ ({Token.kind == "punctuation"}):punc
+ ({Token.category == "VBZ"}):vbz
+ ({Token.category == "NN"}|{Token.category == "NNP"}):part2
+):mention
+-->
+:mention.PluralMultiWords = {rule="Disease", part1 = :part1.Token.string, punc = :punc.Token.string, vbz = :vbz.Token.string, part2 = :part2.Token.string}

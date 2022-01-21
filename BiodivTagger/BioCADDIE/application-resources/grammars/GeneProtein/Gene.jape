@@ -1,0 +1,32 @@
+Phase: Gene
+Input: Lookup gene Tagger Location
+
+Options: control = brill
+
+Rule: DefaultURI
+Priority: 20
+(
+{!Lookup, gene} | {!Lookup, Tagger}
+
+):mention
+-->
+:mention.GeneProtein = {class = "http://default.com", inst = "http://default.com/URI", rule="no URI found"}
+
+Rule: GeneToUrlAnnotation
+Priority: 30
+(
+{Lookup, gene}
+
+):mention
+-->
+:mention.GeneProtein = {class = :mention.Lookup.class, inst = :mention.Lookup.inst, rule="gene URI"}
+
+Rule: TaggerToUrlAnnotation
+Priority: 25
+(
+{Lookup, Tagger, !gene}
+
+):mention
+-->
+:mention.GeneProtein = {class = :mention.Lookup.class, inst = :mention.Lookup.inst, rule="Tagger URI"}
+

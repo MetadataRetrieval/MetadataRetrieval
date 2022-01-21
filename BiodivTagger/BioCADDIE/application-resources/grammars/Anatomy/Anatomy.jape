@@ -1,0 +1,60 @@
+Phase: Anatomy
+Input: Lookup Token Root PluralMultiWords Organism Location
+
+Options: control = brill
+
+Rule: AnatomyToUrlAnnotation
+Priority: 20
+(
+{Lookup, Token.category == NN, !Root} | {Lookup, Token.category == NNS, !Root} | {Lookup, Token.category == NNP, !Root} | {Lookup, Token.category == JJ, !Root} 
+
+):mention
+-->
+:mention.Anatomy = {class = :mention.Lookup.class, inst = :mention.Lookup.inst}
+
+Rule: Root
+Priority:35
+(
+{Lookup,Root}
+
+):mention
+-->
+:mention.Anatomy = {class = :mention.Lookup.class, inst = :mention.Lookup.inst, rule = "Root"}
+
+Rule: Organism
+Priority:40
+(
+{Organism contains Lookup} | {Lookup contains Organism}
+
+):mention
+-->
+:mention.ToDelete = {rule = "Organism inside Anatomy Lookup or Anatomy Lookup inside Organism"}
+
+Rule: Location
+Priority:50
+(
+{Location contains Lookup} | {Lookup contains Location}
+
+):mention
+-->
+:mention.ToDelete = {rule = "Location inside Anatomy Lookup or Anatomy Lookup inside Location"}
+
+
+/*Rule: Root
+Priority:30
+(
+{Root.text == Lookup}
+
+):mention
+-->
+:mention.Anatomy = {class = :mention.Lookup.class, inst = :mention.Lookup.inst, rule = "Root text"}
+
+Rule: Root
+Priority:35
+(
+{Root.root == Lookup}
+
+):mention
+-->
+:mention.Anatomy = {class = :mention.Lookup.class, inst = :mention.Lookup.inst, rule = "Root root"}
+*/

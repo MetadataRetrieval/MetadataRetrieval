@@ -1,0 +1,57 @@
+Imports: { 
+import static gate.Utils.*;
+}
+
+Phase: SplitConnections
+Input: Material Process Disease GeneProtein Anatomy
+
+Options: control = all
+
+
+Rule: SplitConnections
+(
+{Material} | {Process} | {Disease} | {GeneProtein} | {Anatomy}
+
+):mention
+-->
+:mention{
+  AnnotationSet set = bindings.get("mention");
+  Annotation ann = set.iterator().next();
+  long offset = start(ann);
+  long endOffset = end(ann);
+  String type = ann.getType();
+  
+  
+  try{
+    if(ann.getFeatures().get("connections")!=null){
+		String connections = ann.getFeatures().get("connections").toString();
+		
+		if(ann.getFeatures().get("inst")!=null && !ann.getFeatures().get("inst").equals("http://default.com/URI")){
+			String inst = ann.getFeatures().get("inst").toString();
+
+			String[] connArray = connections.split(",");
+			
+			if(connArray!=null && connArray.length > 0){
+				
+					for( int i = 0; i < connArray.length; i++)
+					{
+						String element = connArray[i];
+
+						FeatureMap features = Factory.newFeatureMap();  
+						features.put("inst",inst);
+						features.put("broader",element);
+
+						addAnn(outputAS, offset, endOffset, type, features);
+					}
+			 }
+		 }
+		 inputAS.remove(ann);
+	 }
+  }catch (Exception e){
+      e.printStackTrace();
+  }
+  
+ 
+}
+
+

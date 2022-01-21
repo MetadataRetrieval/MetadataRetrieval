@@ -1,0 +1,58 @@
+Phase: GeneProtein
+Input: GeneProtein
+
+Options: control = appelt
+
+Rule: RemoveDuplicates
+Priority: 30
+(
+{GeneProtein}
+
+):mention
+-->
+:mention{
+	 AnnotationSet biodivSet = doc.getAnnotations("BIODIV");
+	 //get GeneProtein annotations
+	 AnnotationSet geneProteinSet = biodivSet.get("GeneProtein");
+
+	 try{
+	            Annotation prevAnn = null;
+				long start = 0;
+				long end = 0;
+				for(Annotation gp : geneProteinSet){
+					if(prevAnn!=null){
+						
+						FeatureMap prevFeatures = prevAnn.getFeatures();
+						FeatureMap gpFeatures   = gp.getFeatures();
+						
+						String instPrev = prevAnn.getFeatures().get("inst").toString().toLowerCase();
+						String instGP = gp.getFeatures().get("inst").toString().toLowerCase();
+						
+						//System.out.println(instPrev);
+						//System.out.println(instGP);
+						long startPrev = prevAnn.getStartNode().getOffset().longValue();
+						long endPrev = prevAnn.getEndNode().getOffset().longValue();
+						//System.out.println(startPrev);
+						//System.out.println(endPrev);
+						
+						long startGP = gp.getStartNode().getOffset().longValue();
+						long endGP = gp.getEndNode().getOffset().longValue();
+						//System.out.println(startGP);
+						//System.out.println(endGP);
+						
+						//remove duplicates
+						if(instPrev.equals(instGP) && startPrev == startGP && endPrev == endGP){
+						    System.out.println("duplicate removed: " + startPrev + " " +endPrev+ " " +instPrev);
+							inputAS.remove(prevAnn);
+						}
+					}
+					prevAnn = gp;
+					start = prevAnn.getStartNode().getOffset().longValue();
+					end = prevAnn.getEndNode().getOffset().longValue();
+				}
+	 }catch (Exception e){
+					e.printStackTrace();
+	 }
+	 
+
+}

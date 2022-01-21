@@ -1,0 +1,22 @@
+Phase: Tagger
+Input: Lookup Tagger gene GenMice
+
+Options: control = appelt
+
+Rule: TaggerToUrlAnnotation
+Priority: 20
+(
+{Lookup, Tagger, !GenMice}
+
+):mention
+-->
+:mention.GeneProtein = {class = :mention.Lookup.class, inst = :mention.Lookup.inst, rule="Tagger"}
+
+Rule: Duplicate
+Priority: 30
+(
+{gene, Tagger, !GenMice}
+
+):mention
+-->
+:mention.Tagger = {rule="duplicate of gene"}
